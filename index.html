@@ -62,14 +62,14 @@
     <template id="dashboard">
             <header class="header-box">
                 <h1>Bank App</h1>
-                <a class="logout-link" href="login" onclick="getURL(e)">Logout</a>
+                <button class="logout-link" onclick="logout()">Logout</button>
             </header>
             <section class="balance-box">
                 <span style="margin-right: 5px; color:#10375f;" class="bold-paragraph">Balance: </span> <span id="dashboard-balance"></span><span id="dashboard-currency"></span>
             </section>
             <section class="info-box">
                 <h3 id="dashboard-username" class="user-name"></h3>
-                <button id="add-transaction" class="add-transaction-link" type="button" onclick="getURL()">Add</button>
+                <button id="add-transaction" class="add-transaction-link" type="button" onclick="goAddTransactionPage()">Add</button>
             </section>
             <section class="transaction-box">
                 <h2>Transactions</h2>

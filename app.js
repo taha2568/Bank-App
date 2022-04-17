@@ -1,10 +1,28 @@
 let account = null;
 const storageKey = 'savedAccount'
+
+const loginText = document.querySelector(".title-text .login");
+const loginForm = document.querySelector("form.login");
+const loginBtn = document.querySelector("label.login");
+const signupBtn = document.querySelector("label.signup");
+const signupLink = document.querySelector("form .signup-link a");
+
+// global variables
+
 const routes = {
     '/login' : {templateId: 'login-signup'},
     '/dashboard' : {templateId: 'dashboard', init: updateDashboard},
     '/add' : {templateId : 'add-transaction-template'}
 };
+
+function init(){
+    account = JSON.parse(localStorage.getItem(storageKey))
+    if(!account) {
+        updateRoute();
+    }else {
+        navigate('/dashboard')
+    }
+}
 
 function updateRoute(){
     let visible_section = document.getElementById('visible-section');
@@ -16,18 +34,14 @@ function updateRoute(){
         return navigate('login'); //redirect to login page
     }
 
+    //changing the style of body for showing different templates
     if(route.templateId === 'dashboard') {
-        // console.log('true')
-        // console.log(`dashboard : value of account : ${account}`)
         document.body.id = 'body-dashboard-grid';
         visible_section.className = 'dashboard-box';
     }else if (route.templateId === 'add-transaction-template') {
-        // console.log(`add : value of account : ${account}`)
         document.body.id = 'body-add-transaction-grid';
         visible_section.className = 'add-transaction-box';
     }else {
-        // console.log('false')
-        // console.log(`login : value of account : ${account}`)
         document.body.id = '';
         visible_section.className = '';
     }
@@ -37,6 +51,7 @@ function updateRoute(){
     let view = target_template.content.cloneNode(true);
     visible_section.innerHTML = '';
     visible_section.appendChild(view);
+
     if (typeof route.init === 'function') {
         route.init();
     }
@@ -47,14 +62,14 @@ function navigate(path){
     updateRoute();
 }
 
-function getURL(e){
-    // e.preventDefault();
+function goAddTransactionPage(e){
     navigate('add');
 }
 
-// function goDashboard() {
-//     navigate('/dashboard');
-// }
+function logout() {
+    localStorage.removeItem(storageKey);
+    navigate('login')
+}
 
 async function newTransaction() {
     let new_transaction_form = document.getElementById('new-transaction-form');
@@ -127,6 +142,8 @@ async function login(){
     }
 
     account = result;
+    localStorage.setItem(storageKey, JSON.stringify(result));
+    console.log(JSON.parse(localStorage.getItem(storageKey)))
     navigate('/dashboard')
 }
 
@@ -145,35 +162,23 @@ function updateElement(id, text_or_node){
     element.append(text_or_node);
 }
 
-function updateDashboard() {
+async function updateDashboard() {
     if(!account){
         return navigate('/login')
     }
-    // console.log(`update account`);
+    account = await getAccount(account.user)
     updateElement('dashboard-balance', account.balance.toFixed(2))
     updateElement('dashboard-currency', account.currency)
     updateElement('dashboard-username',`${account.user}'s budget`)
 
-    // const transactionsRows = document.createDocumentFragment();
     let tbody = document.getElementById('tbody');
     tbody.textContent = '';
     for(const transaction of account.transactions){
         createTransactionRow(transaction);
-        // tbody.appendChild(transaction_row);
-        // transactionsRows.appendChild(transaction_row);
     }
-    // console.log(account.transactions)
-    // updateElement('transactions', transactionsRows);
 }
 
 function createTransactionRow(transaction){
-    // let template = document.getElementById('transaction')
-    // let transaction_row = template.content.cloneNode(true);
-    // let tr = document.getElementById('trow')
-    // tr.children[0].textContent = transaction.date;
-    // tr.children[1].textContent = transaction.object;
-    // tr.children[2].textContent = transaction.amount.toFixed(2);
-    // return transaction_row;
     let tbody = document.getElementById('tbody');
     let tr = document.createElement('tr')
     let date = document.createElement('td')
@@ -188,16 +193,9 @@ function createTransactionRow(transaction){
     tr.appendChild(amount)
 }
 
-// window.location.pathname = '/login';
-updateRoute();
+init();
 
 
-//**
-const loginText = document.querySelector(".title-text .login");
-const loginForm = document.querySelector("form.login");
-const loginBtn = document.querySelector("label.login");
-const signupBtn = document.querySelector("label.signup");
-const signupLink = document.querySelector("form .signup-link a");
 signupBtn.onclick = (()=>{
     loginForm.style.marginLeft = "-50%";
     loginText.style.marginLeft = "-50%";
@@ -210,4 +208,3 @@ signupLink.onclick = (()=>{
     signupBtn.click();
     return false;
 });
-//**
