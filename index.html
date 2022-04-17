@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div id="visible-section">Loading...</div>
+    <template id="login-signup">
+        <div class="wrapper">
+            <div class="title-text">
+                <div class="title login">Login Form</div>
+                <div class="title signup">Signup Form</div>
+            </div>
+            <div class="form-container">
+                <div class="slide-controls">
+                    <input type="radio" name="slide" id="login" checked>
+                    <input type="radio" name="slide" id="signup">
+                    <label for="login" class="slide login">Login</label>
+                    <label for="signup" class="slide signup">Signup</label>
+                    <div class="slider-tab"></div>
+                </div>
+                <div class="form-inner">
+
+                    <form id="loginForm" action="javascript:login()" class="login">
+                        <div class="field">
+                            <input type="text" placeholder="Username" name="username" id="username-input" required maxlength="25">
+                        </div>
+                        <div id="lo-error-message"></div>
+                        <div id="forget-password" class="pass-link"><a href="#">Forgot password?</a>                 </div>
+                        <div class="field btn">
+                            <button class="btn-layer" type="submit">Login</button>
+                        </div>
+                        <div class="signup-link">Not a member? <a href="">Signup now</a></div>
+                    </form>
+
+                    <form id="registerForm" action="javascript:register()" class="signup">
+                        <div class="field">
+                            <input type="text" placeholder="Username" id="user" name="user" required maxlength="25">
+                        </div>
+                        <div class="field">
+                            <input type="text" placeholder="Currency" id="currency" name="currency" required>
+                        </div>
+                        <div class="field">
+                            <input type="text" placeholder="Description" id="description" name="description" maxlength="200">
+                        </div>
+                        <div class="field">
+                            <input type="number" placeholder="Balance" id="balance" name="balance">
+                        </div>
+                        <div id="re-error-message"></div>
+                        <div class="field btn">
+                            <button class="btn-layer" type="submit" value="Signup">Signup</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="dashboard">
+            <header class="header-box">
+                <h1>Bank App</h1>
+                <a class="logout-link" href="login" onclick="getURL(e)">Logout</a>
+            </header>
+            <section class="balance-box">
+                <span style="margin-right: 5px; color:#10375f;" class="bold-paragraph">Balance: </span> <span id="dashboard-balance"></span><span id="dashboard-currency"></span>
+            </section>
+            <section class="info-box">
+                <h3 id="dashboard-username" class="user-name"></h3>
+                <button id="add-transaction" class="add-transaction-link" type="button" onclick="getURL()">Add</button>
+            </section>
+            <section class="transaction-box">
+                <h2>Transactions</h2>
+                <table id="table">
+                    <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Object</th>
+                        <th>Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                    </tbody>
+                </table>
+            </section>
+    </template>
+    <template id="add-transaction-template">
+        <div id="add-transaction-dialog">
+            <h2 class="transaction-title">Add Transaction</h2>
+            <form action="javascript:newTransaction()" id="new-transaction-form" class="dialog-form">
+                <label class="input-label" for="date-input">Date</label>
+                <input class="input" type="date" name="date" id="date-input">
+                <label class="input-label" for="object-input">Object</label>
+                <input class="input" type="text" name="object" id="object-input">
+                <label class="input-label" for="amount-input">Amount</label>
+                <input class="input" type="text" name="amount" id="amount-input">
+                <div id="new-transaction-error"></div>
+                <div class="button-box">
+<!--                    <button form type="button" id="cansel" onclick="goDashboard()">CANCEL</button>-->
+                    <button type="submit" id="ok" >OK</button>
+                </div>
+            </form>
+        </div>
+    </template>
+    <template id="transaction">
+        <tr id="trow">
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </template>
+    <script src="app.js" defer></script>
+</body>
+</html>
+
+
+<!--<div class="wrapper">-->
+<!--    <div class="title-text">-->
+<!--        <div class="title login">Login Form</div>-->
+<!--        <div class="title signup">Signup Form</div>-->
+<!--    </div>-->
+<!--    <div class="form-container">-->
+<!--        <div class="slide-controls">-->
+<!--            <input type="radio" name="slide" id="login" checked>-->
+<!--            <input type="radio" name="slide" id="signup">-->
+<!--            <label for="login" class="slide login">Login</label>-->
+<!--            <label for="signup" class="slide signup">Signup</label>-->
+<!--            <div class="slider-tab"></div>-->
+<!--        </div>-->
+<!--        <div class="form-inner">-->
+
+<!--            <form id="loginForm" action="javascript:login()" class="login">-->
+<!--                <div class="field">-->
+<!--                    <input type="text" placeholder="Username" name="username" id="username-input" required maxlength="25">-->
+<!--                </div>-->
+<!--                <div id="lo-error-message"></div>-->
+<!--                <div id="forget-password" class="pass-link"><a href="#">Forgot password?</a>                 </div>-->
+<!--                <div class="field btn">-->
+<!--                    <button class="btn-layer" type="submit">Login</button>-->
+<!--                </div>-->
+<!--                <div class="signup-link">Not a member? <a href="">Signup now</a></div>-->
+<!--            </form>-->
+
+<!--            <form id="registerForm" action="javascript:register()" class="signup">-->
+<!--                <div class="field">-->
+<!--                    <input type="text" placeholder="Username" id="user" name="user" required maxlength="25">-->
+<!--                </div>-->
+<!--                <div class="field">-->
+<!--                    <input type="text" placeholder="Currency" id="currency" name="currency" required>-->
+<!--                </div>-->
+<!--                <div class="field">-->
+<!--                    <input type="text" placeholder="Description" id="description" name="description" maxlength="200">-->
+<!--                </div>-->
+<!--                <div class="field">-->
+<!--                    <input type="number" placeholder="Balance" id="balance" name="balance">-->
+<!--                </div>-->
+<!--                <div id="re-error-message"></div>-->
+<!--                <div class="field btn">-->
+<!--                    <button class="btn-layer" type="submit" value="Signup">Signup</button>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<section>-->
+<!--    <h2>Login</h2>-->
+<!--    <form id="loginForm" action="javascript:login()">-->
+<!--        <label for="username-input">username</label>-->
+<!--        <input type="text" name="username" id="username-input" required maxlength="25">-->
+<!--        <div id="lo-error-message"></div>-->
+<!--        <button type="submit">Submit</button>-->
+<!--    </form>-->
+<!--    <hr/>-->
+<!--    <h2>Register</h2>-->
+<!--    <form id="registerForm" action="javascript:register()">-->
+<!--        <label for="user">Username</label>-->
+<!--        <input id="user" name="user" type="text" required maxlength="25">-->
+<!--        <label for="currency">Currency</label>-->
+<!--        <input id="currency" name="currency" type="text" value="$" required>-->
+<!--        <label for="description">Description</label>-->
+<!--        <input id="description" name="description" type="text" maxlength="200">-->
+<!--        <label for="balance">Current balance</label>-->
+<!--        <input id="balance" name="balance" type="number" value="0">-->
+<!--        <div id="re-error-message"></div>-->
+<!--        <button type="submit">Register</button>-->
+<!--    </form>-->
+<!--    &lt;!&ndash;              <a href="dashboard" onclick="getURL(e)">Login</a>&ndash;&gt;-->
+<!--</section>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--dashboard-->
+<!--<header>-->
+<!--    <h1>Bank App</h1>-->
+<!--    <a href="login" onclick="getURL(e)">Logout</a>-->
+<!--</header>-->
+<!--<section>-->
+<!--    Balance: <span id="dashboard-balance"></span><span id="dashboard-currency"></span>-->
+<!--</section>-->
+<!--<h2 id="dashboard-description"></h2>-->
+<!--<section>-->
+<!--    <h2>Transactions</h2>-->
+<!--    <tabel>-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>Data</th>-->
+<!--            <th>Object</th>-->
+<!--            <th>Amount</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody id="transactions">-->
+
+<!--        </tbody>-->
+<!--    </tabel>-->
+<!--</section>-->
